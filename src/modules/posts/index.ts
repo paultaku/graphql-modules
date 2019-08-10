@@ -1,14 +1,15 @@
 import { GraphQLModule } from '@graphql-modules/core';
 import { mergeGraphQLSchemas, mergeResolvers } from '@graphql-modules/epoxy';
 import { loadResolversFiles, loadSchemaFiles } from '@graphql-modules/sonar';
-import { UserProvider } from './providers/user';
+import UsersModule from '../users';
 
+const typeDefs = mergeGraphQLSchemas(loadSchemaFiles(`${__dirname}/schema/`));
 export default new GraphQLModule({
-    name: 'User',
+    name: 'Post',
     resolvers: mergeResolvers(loadResolversFiles(`${__dirname}/resolvers/`)),
-    typeDefs: mergeGraphQLSchemas(loadSchemaFiles(`${__dirname}/schema/`)),
-    providers: [
-      UserProvider
+    typeDefs,
+    providers: [],
+    imports: [
+        UsersModule
     ],
-    imports: [],
 });

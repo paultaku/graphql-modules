@@ -1,9 +1,16 @@
 import { GraphQLModule } from '@graphql-modules/core';
-import { ApolloServer } from "apollo-server";
-import { makeExecutableSchema } from 'graphql-tools';
+import { ApolloServer, makeExecutableSchema } from "apollo-server";
+import { importSchema } from 'graphql-import';
+import * as path from 'path';
+
 export async function bootstrap(appModule: GraphQLModule) {
-    const { typeDefs, context, resolvers } = appModule;
-    const schema = makeExecutableSchema({ typeDefs, resolvers })
+    const { context, resolvers } = appModule;
+    const typeDefs = importSchema(path.resolve(__dirname, './generated/schema.graphql'));
+    const schema = makeExecutableSchema({
+        typeDefs,
+        resolvers,
+        resolverValidationOptions: { requireResolversForResolveType: false },
+    });
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
     const server = new ApolloServer({

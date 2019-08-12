@@ -1,14 +1,17 @@
 import { Injectable } from '@graphql-modules/di';
+import { prisma, User } from '../../../generated/prisma-client';
+
 
 @Injectable()
 export class UserProvider {
-  users = [
-    {
-      id: '0',
-      name: 'Jhon',
-    }
-  ];
-  getUserById(id: string) {
-    return this.users.find(user => user.id === id);
+
+  async getUsers() {
+    return await prisma.user;
+  }
+
+  async getUserById(id: string): Promise<User> {
+    return await prisma.user({
+      id
+    });
   }
 }

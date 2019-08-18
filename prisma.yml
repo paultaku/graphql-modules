@@ -9,4 +9,5 @@ generate:
     output: ./src/generated/schema.graphql
 hooks:
   post-deploy:
-    - prisma generate
+    - npx prisma generate
+    - npx nexus-prisma-generate --client ./src/generated/prisma-client --output ./src/generated/nexus-prisma

@@ -24,6 +24,6 @@ export default new GraphQLModule({
       })
     ],
     context: (config, session, context) => {
-
+      console.log('user module.');
     }
 });

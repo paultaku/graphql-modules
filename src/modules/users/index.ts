@@ -1,14 +1,29 @@
 import { GraphQLModule } from '@graphql-modules/core';
-import { mergeGraphQLSchemas, mergeResolvers } from '@graphql-modules/epoxy';
-import { loadResolversFiles, loadSchemaFiles } from '@graphql-modules/sonar';
-import { UserProvider } from './providers/user';
+import { UserProvider } from './providers/user.provider';
+import UserResolver from './resolvers/user.resolver';
+import { buildSchemaSync } from 'type-graphql';
+import { mergeGraphQLSchemas } from '@graphql-modules/epoxy';
+import { loadSchemaFiles } from '@graphql-modules/sonar';
+
+const resolvers = [
+  UserResolver
+];
 
 export default new GraphQLModule({
     name: 'User',
-    resolvers: mergeResolvers(loadResolversFiles(`${__dirname}/resolvers/`)),
     typeDefs: mergeGraphQLSchemas(loadSchemaFiles(`${__dirname}/schema/`)),
     providers: [
-      UserProvider
+      UserProvider,
+      ...resolvers,
     ],
-    imports: [],
+    extraSchemas: [
+      buildSchemaSync({
+        resolvers,
+        emitSchemaFile: false,
+        container: ({ context }) => context.injector
+      })
+    ],
+    context: (config, session, context) => {
+
+    }
 });

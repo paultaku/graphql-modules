@@ -1,11 +1,7 @@
-type Query {
-  posts: [Post]
-}
-
 scalar DateTime
 
 type Post {
-  id: ID!
+  id: ID! 
   title: String!
   published: Boolean!
   author: User

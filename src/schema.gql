@@ -6,6 +6,8 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
@@ -34,7 +36,18 @@ type PageInfo {
   endCursor: String
 }
 
+type Post {
+  id: ID!
+  title: String!
+  published: Boolean!
+  author: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
+  getAllUsers: [User!]!
+  posts: [Post]
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -47,9 +60,10 @@ type Subscription {
 
 type User {
   id: ID!
-  email: String
+  email: String!
   name: String!
-  password: String
+  password: String!
+  description: String
 }
 
 type UserConnection {

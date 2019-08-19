@@ -1,9 +1,9 @@
 import { GraphQLModule } from '@graphql-modules/core';
 import { UserProvider } from './providers/user.provider';
-import UserResolver from './resolvers/user.resolver';
 import { buildSchemaSync } from 'type-graphql';
 import { mergeGraphQLSchemas } from '@graphql-modules/epoxy';
 import { loadSchemaFiles } from '@graphql-modules/sonar';
+import UserResolver from './resolvers/user.resolver';
 
 const resolvers = [
   UserResolver
@@ -20,7 +20,10 @@ export default new GraphQLModule({
       buildSchemaSync({
         resolvers,
         emitSchemaFile: false,
-        container: ({ context }) => context.injector
+        container: (ctx) => {
+          console.log(`extra schemas context.`, Object.keys(ctx.context));
+          return ctx.context
+        }
       })
     ],
     context: (config, session, context) => {

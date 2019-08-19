@@ -1,10 +1,15 @@
-import { Injectable } from '@graphql-modules/di';
+import { Injectable, ProviderScope } from '@graphql-modules/di';
 import { prisma } from '../../../generated/prisma-client';
-import { UserCreateInput } from '../../../generated/prisma-client/index';
 
 
-@Injectable()
+@Injectable({
+  scope: ProviderScope.Application
+})
 export class UserProvider {  
+
+  constructor() {
+    console.log('UserProvider created.');
+  }
   get users() {
     return prisma.users();
   }

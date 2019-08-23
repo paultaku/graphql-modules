@@ -1,16 +1,17 @@
 import { Resolver, Query } from "type-graphql";
 import { User } from "../types/user.type";
-import { UserProvider } from '../providers/user.provider';
+import { UserProvider, UserProviderToken } from '../providers/user.provider';
+import { Service, Inject } from "typedi";
 
+@Service()
 @Resolver(of => User)
 export default class UserResolver {
-  constructor(private userProvider: UserProvider){
-    console.log(`user resolver created.`, userProvider);
-  }
+
+  @Inject(UserProviderToken)
+  private readonly userProvider: UserProvider;
 
   @Query(returns => [User])
-  async getAllUsers(ctx): Promise<any> {
-    console.log('user resolver getAllUsers', ctx);
+  async getAllUsers(): Promise<any> {
     const users = await this.userProvider.users;
     return users;
   }

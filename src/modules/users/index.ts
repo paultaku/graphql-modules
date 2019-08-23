@@ -1,9 +1,10 @@
 import { GraphQLModule } from '@graphql-modules/core';
-import { UserProvider } from './providers/user.provider';
+import { UserProvider, UserProviderToken } from './providers/user.provider';
 import { buildSchemaSync } from 'type-graphql';
 import { mergeGraphQLSchemas } from '@graphql-modules/epoxy';
 import { loadSchemaFiles } from '@graphql-modules/sonar';
 import UserResolver from './resolvers/user.resolver';
+import { Container } from 'typedi';
 
 const resolvers = [
   UserResolver
@@ -20,13 +21,16 @@ export default new GraphQLModule({
       buildSchemaSync({
         resolvers,
         emitSchemaFile: false,
-        container: (ctx) => {
-          console.log(`extra schemas context.`, Object.keys(ctx.context));
-          return ctx.context
-        }
+        // container: (({ context }: ResolverData<any>) => context.container)
+        container: () => {
+          if (!Container.get(UserProviderToken)) {
+            Container.set(UserProviderToken, UserProvider);
+          }
+          return Container;
+        },
+        // container: ({ context }) => {
+        //   return context;
+        // },
       })
     ],
-    context: (config, session, context) => {
-      console.log('user module.');
-    }
 });

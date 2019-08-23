@@ -5,6 +5,7 @@ import UsersModule from './modules/users';
 import PostsModule from './modules/posts';
 
 export const appModule = new GraphQLModule({
+    name: 'App',
     typeDefs: importSchema(path.resolve(__dirname, './generated/schema.graphql')),
     imports: [
         PostsModule,

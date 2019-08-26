@@ -1,4 +1,4 @@
-import { UserProvider } from '../providers/user';
+import { UserProvider } from '../providers/user.provider';
 
 export default {
     Query: {

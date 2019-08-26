@@ -2,8 +2,8 @@
     "compilerOptions": {
       "sourceMap": true,
       "outDir": "dist",
-      "strict": true,
-      "lib": ["esnext", "dom"],
+      "target": "es5",
+      "lib": ["esnext", "es2016","dom"],
       "moduleResolution": "node",
       "experimentalDecorators": true
     }
